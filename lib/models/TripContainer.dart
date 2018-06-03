@@ -2,13 +2,16 @@ import 'Trip.dart';
 
 class TripContainer {
   String title;
-  final String _from;
-  final String _to;
+  String _from;
+  String _to;
+  int id;
   final List<Trip> trips = new List();
 
-  TripContainer(this._from, this._to) {
+  TripContainer.fromTo(this._from, this._to) {
     title = _from + " - " + _to;
   }
+
+  TripContainer(this.title, [this.id]);
 
   Trip getBest() {
     if (trips == null || trips.isEmpty) return null;

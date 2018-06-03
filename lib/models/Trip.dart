@@ -1,6 +1,7 @@
-class Trip{
-    final Duration time;
-    final DateTime date;
+class Trip {
+  final Duration time;
+  final DateTime date;
+  int id;
 
-  const Trip(this.time, this.date);
+  Trip(this.time, this.date, [this.id]);
 }

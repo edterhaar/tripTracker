@@ -28,8 +28,10 @@ class TripsPageState extends State<TripsPage> {
             child: new Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                new TripSummaryTop(Colors.greenAccent[100], Icons.mood, getTripDetails(widget.tripContainer.getBest())),
-                new TripSummaryTop(Colors.red[200], Icons.mood_bad, getTripDetails(widget.tripContainer.getWorst()))
+                new TripSummaryTop(Colors.greenAccent[100], Icons.mood,
+                    getTripDetails(widget.tripContainer.getBest())),
+                new TripSummaryTop(Colors.red[200], Icons.mood_bad,
+                    getTripDetails(widget.tripContainer.getWorst()))
               ],
             )),
         new Divider(
@@ -65,7 +67,7 @@ class TripsPageState extends State<TripsPage> {
   }
 
   String getTripDetails(Trip trip) =>
-    "${getDateString(trip?.date)} \n ${getTimeString(trip?.time)}";
+      "${getDateString(trip?.date)} \n ${getTimeString(trip?.time)}";
 
   Trip getTrip(int index) => widget.tripContainer.trips[index];
 

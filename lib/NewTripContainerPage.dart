@@ -16,13 +16,12 @@ class NewTripContainerPageState extends State<NewTripContainerPage> {
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
 
   void submit(BuildContext context) {
-    
-      final form = _formKey.currentState;
+    final form = _formKey.currentState;
 
-      if (form.validate()) {
-        form.save();
-        Navigator.of(context).pop(new TripContainer(_from, _to));
-      }    
+    if (form.validate()) {
+      form.save();
+      Navigator.of(context).pop(new TripContainer.fromTo(_from, _to));
+    }
   }
 
   @override
@@ -33,40 +32,36 @@ class NewTripContainerPageState extends State<NewTripContainerPage> {
         ),
         body: new Form(
           key: this._formKey,
-          child: new ListView(
+          child: new ListView(padding: EdgeInsets.symmetric(vertical: 8.0), children: <Widget>[
+            new ListTile(
+                title: new TextFormField(
+                    validator: (val) => val.isEmpty ? 'Cannot be empty' : null,
+                    decoration: new InputDecoration(
+                      labelText: 'From',
+                    ),
+                    onSaved: (val) => _from = val)),
+            new Padding(
               padding: EdgeInsets.symmetric(vertical: 8.0),
-              children: <Widget>[
-                new ListTile(
-                    title: new TextFormField(
-                        validator: (val) =>
-                            val.isEmpty ? 'Cannot be empty' : null,
-                        decoration: new InputDecoration(
-                          labelText: 'From',
-                        ),
-                        onSaved: (val) => _from = val)),
-                new Padding(
-                  padding: EdgeInsets.symmetric(vertical: 8.0),
-                ),
-                new ListTile(
-                  title: new TextFormField(
-                      validator: (val) =>
-                          val.isEmpty ? 'Cannot be empty' : null,
-                      decoration: new InputDecoration(
-                        labelText: 'To',
-                      ),
-                      onSaved: (val) => _to = val),
-                ),
-                new Container(
-                    padding: const EdgeInsets.all(20.0),
-                    child: new RaisedButton(
-                      child: new Text(
-                        'Create',
-                        style: new TextStyle(color: Colors.white),
-                      ),
-                      onPressed:() => this.submit(context),
-                      color: Colors.blue,
-                    )),
-              ]),
+            ),
+            new ListTile(
+              title: new TextFormField(
+                  validator: (val) => val.isEmpty ? 'Cannot be empty' : null,
+                  decoration: new InputDecoration(
+                    labelText: 'To',
+                  ),
+                  onSaved: (val) => _to = val),
+            ),
+            new Container(
+                padding: const EdgeInsets.all(20.0),
+                child: new RaisedButton(
+                  child: new Text(
+                    'Create',
+                    style: new TextStyle(color: Colors.white),
+                  ),
+                  onPressed: () => this.submit(context),
+                  color: Colors.blue,
+                )),
+          ]),
         ));
   }
 }

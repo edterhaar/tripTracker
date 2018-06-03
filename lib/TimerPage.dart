@@ -54,9 +54,7 @@ class TimerPageState extends State<TimerPage> {
     setState(() {
       if (_stopwatch.isRunning) {
         _stopwatch.stop();
-        Navigator
-            .of(context)
-            .pop(new Trip(_stopwatch.elapsed, new DateTime.now()));
+        Navigator.of(context).pop(new Trip(_stopwatch.elapsed, new DateTime.now()));
       } else {
         _stopwatch.start();
       }

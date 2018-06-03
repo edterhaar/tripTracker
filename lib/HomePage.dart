@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'models/TripContainer.dart';
 import 'TripContainerListItem.dart';
 import 'NewTripContainerPage.dart';
+import 'database/DatabaseClient.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
@@ -11,9 +12,38 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => new _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
+  List<TripContainer> _tripContainers = new List();
+  DatabaseClient db;
 
-  List<TripContainer> _tripContainers= new List();
+  _MyHomePageState() {
+    db = new DatabaseClient();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+
+    db.create().then((dynamic) => db.getGetAllTripContainers().then((t) {
+          _tripContainers = t;
+          setState(() {});
+        }));
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    print("Dipsoing");
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.suspending || state == AppLifecycleState.inactive) {
+      db.save(_tripContainers);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,13 +65,10 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: new FloatingActionButton(
         onPressed: () async {
           var tripContainer = await Navigator.push(
-              context,
-              new MaterialPageRoute(
-                  builder: (context) => new NewTripContainerPage()));
-           if(tripContainer != null)
-           { 
-              _tripContainers.add(tripContainer);
-           }
+              context, new MaterialPageRoute(builder: (context) => new NewTripContainerPage()));
+          if (tripContainer != null) {
+            _tripContainers.add(tripContainer);
+          }
         },
         tooltip: 'New trip',
         child: new Icon(Icons.add),
