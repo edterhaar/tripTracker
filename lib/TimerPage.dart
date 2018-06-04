@@ -8,7 +8,7 @@ class TimerPage extends StatefulWidget {
 }
 
 class TimerPageState extends State<TimerPage> {
-  Stopwatch _stopwatch = new Stopwatch();
+  DateTime startTime;
   Timer _timer;
   final String _title = "New trip";
 
@@ -35,14 +35,14 @@ class TimerPageState extends State<TimerPage> {
           children: <Widget>[
             new Center(
               child: new Text(
-                TimerTextFormatter.format(_stopwatch.elapsedMilliseconds),
+                TimerTextFormatter.format(differenceInTime().inMilliseconds),
                 style: new TextStyle(fontSize: 60.0),
               ),
             ),
             new Padding(
               padding: const EdgeInsets.symmetric(vertical: 10.0),
               child: new FloatingActionButton(
-                  child: new Text(_stopwatch.isRunning ? "Finish" : "Start",
+                  child: new Text(startTime == null ? "Start" : "Finish",
                       style: new TextStyle(fontSize: 16.0)),
                   onPressed: buttonPressed),
             ),
@@ -52,17 +52,22 @@ class TimerPageState extends State<TimerPage> {
 
   void buttonPressed() {
     setState(() {
-      if (_stopwatch.isRunning) {
-        _stopwatch.stop();
-        Navigator.of(context).pop(new Trip(_stopwatch.elapsed, new DateTime.now()));
+      if (startTime == null) {
+        startTime = new DateTime.now();
       } else {
-        _stopwatch.start();
+        Navigator.of(context).pop(new Trip(differenceInTime(), new DateTime.now()));
       }
     });
   }
 
   void onTick(Timer t) {
     setState(() {});
+  }
+
+  Duration differenceInTime() {
+    if (startTime == null) return new Duration(seconds: 0);
+
+    return new DateTime.now().difference(startTime);
   }
 }
 
