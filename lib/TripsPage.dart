@@ -3,7 +3,6 @@ import 'models/TripContainer.dart';
 import 'TripListItem.dart';
 import 'models/Trip.dart';
 import 'TimerPage.dart';
-import 'TripsSummaryTop.dart';
 import 'Helpers.dart';
 
 class TripsPage extends StatefulWidget {
@@ -22,18 +21,30 @@ class TripsPageState extends State<TripsPage> {
         title: new Text(widget.tripContainer.title),
         backgroundColor: Colors.greenAccent,
       ),
-      body: new Column(children: <Widget>[
-        new Expanded(
-            flex: 1,
-            child: new Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      body: new Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                new TripSummaryTop(Colors.greenAccent[100], Icons.mood,
-                    getTripDetails(widget.tripContainer.getBest())),
-                new TripSummaryTop(Colors.red[200], Icons.mood_bad,
-                    getTripDetails(widget.tripContainer.getWorst()))
-              ],
+            new Card(
+                margin: EdgeInsets.all(10.0),
+                child: new Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                  new ListTile(
+                      title: new Text(
+                    "Average: " + getTimeString(widget.tripContainer.getAverage()),
+                    textAlign: TextAlign.center,
+                  )),
+                  new ListTile(
+                      title: new Text(
+                    "Best: " + getTimeString(widget.tripContainer.getBest()?.time),
+                    textAlign: TextAlign.center,
+                  )),
+                  new ListTile(
+                      title: new Text(
+                    "Worst: " + getTimeString(widget.tripContainer.getWorst()?.time),
+                    textAlign: TextAlign.center,
             )),
+                ])),
         new Divider(
           height: 5.0,
         ),
