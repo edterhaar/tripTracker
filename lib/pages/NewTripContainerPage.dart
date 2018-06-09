@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'models/TripContainer.dart';
+import '../models/TripContainer.dart';
 
 class NewTripContainerPage extends StatefulWidget {
   NewTripContainerPage({Key key}) : super(key: key);

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'models/Trip.dart';
-import 'Helpers.dart';
+import '../models/Trip.dart';
+import '../Helpers.dart';
 
 enum BestWorst { Best, Worst, Neither }
 

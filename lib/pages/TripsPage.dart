@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'models/TripContainer.dart';
-import 'TripListItem.dart';
-import 'models/Trip.dart';
+import '../models/TripContainer.dart';
+import '../models/Trip.dart';
+import '../components/TripListItem.dart';
+import '../Helpers.dart';
 import 'TimerPage.dart';
-import 'Helpers.dart';
+
 
 class TripsPage extends StatefulWidget {
   final TripContainer tripContainer;

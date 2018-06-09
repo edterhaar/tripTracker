@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'models/TripContainer.dart';
-import 'TripsPage.dart';
-import 'Helpers.dart';
+import '../models/TripContainer.dart';
+import '../pages/TripsPage.dart';
+import '../Helpers.dart';
 
 class TripsContainerListItem extends StatelessWidget {
   final TripContainer _tripContainer;

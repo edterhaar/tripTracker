@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'models/TripContainer.dart';
-import 'TripContainerListItem.dart';
+import '../models/TripContainer.dart';
+import '../components/TripContainerListItem.dart';
+import '../database/DatabaseClient.dart';
 import 'NewTripContainerPage.dart';
-import 'database/DatabaseClient.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);

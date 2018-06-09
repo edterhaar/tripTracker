@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'models/Trip.dart';
-import 'TimerComponent.dart';
-import 'models/TripContainer.dart';
+import '../models/Trip.dart';
+import '../models/TripContainer.dart';
+import '../components/TimerComponent.dart';
 
 class TimerPage extends StatefulWidget {
   final TripContainer tripContainer;
