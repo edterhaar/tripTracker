@@ -25,7 +25,7 @@ class TripsPageState extends State<TripsPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
+          children: <Widget>[
             new Card(
                 margin: EdgeInsets.all(10.0),
                 child: new Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
@@ -43,30 +43,30 @@ class TripsPageState extends State<TripsPage> {
                       title: new Text(
                     "Worst: " + getTimeString(widget.tripContainer.getWorst()?.time),
                     textAlign: TextAlign.center,
-            )),
+                  )),
                 ])),
-        new Divider(
-          height: 5.0,
-        ),
-        new Expanded(
-            flex: 3,
-            child: new ListView.builder(
-              itemCount: widget.tripContainer.trips.length,
-              itemBuilder: (context, index) {
-                return new Column(children: <Widget>[
-                  new TripsListItem(getTrip(index), getStatus(getTrip(index))),
-                  new Divider(
-                    height: 5.0,
-                  )
-                ]);
-              },
-            ))
-      ]),
+            new Divider(
+              height: 5.0,
+            ),
+            new Expanded(
+                flex: 3,
+                child: new ListView.builder(
+                  itemCount: widget.tripContainer.trips.length,
+                  itemBuilder: (context, index) {
+                    return new Column(children: <Widget>[
+                      new TripsListItem(getTrip(index), getStatus(getTrip(index))),
+                      new Divider(
+                        height: 5.0,
+                      )
+                    ]);
+                  },
+                ))
+          ]),
       floatingActionButton: new FloatingActionButton(
         backgroundColor: Colors.greenAccent,
         onPressed: () async {
-          Trip trip = await Navigator.push(
-              context, new MaterialPageRoute(builder: (context) => new TimerPage()));
+          Trip trip = await Navigator.push(context,
+              new MaterialPageRoute(builder: (context) => new TimerPage(widget.tripContainer)));
           if (trip != null) {
             widget.tripContainer.trips.add(trip);
           }

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'models/Trip.dart';
+import 'TimerComponent.dart';
+import 'models/TripContainer.dart';
 
 class TimerPage extends StatefulWidget {
-  TimerPage({Key key}) : super(key: key);
+  final TripContainer tripContainer;
+  TimerPage(this.tripContainer, {Key key}) : super(key: key);
   TimerPageState createState() => new TimerPageState();
 }
 
@@ -29,25 +32,26 @@ class TimerPageState extends State<TimerPage> {
         appBar: new AppBar(
           title: new Text(_title),
         ),
-        body: new Column(
+        body: new Center(
+            child: new Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            new Center(
-              child: new Text(
-                TimerTextFormatter.format(differenceInTime().inMilliseconds),
-                style: new TextStyle(fontSize: 60.0),
-              ),
-            ),
-            new Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10.0),
-              child: new FloatingActionButton(
-                  child: new Text(startTime == null ? "Start" : "Finish",
-                      style: new TextStyle(fontSize: 16.0)),
-                  onPressed: buttonPressed),
-            ),
+            new TimerComponent(
+                time: new Text(TimerTextFormatter.format(differenceInTime().inMilliseconds),
+                    style: new TextStyle(fontSize: 60.0), textAlign: TextAlign.center),
+                started: startTime != null,
+                expectedTime: widget.tripContainer.getAverage()),
+            new Padding(padding: const EdgeInsets.symmetric(vertical: 10.0)),
+            new FloatingActionButton(
+                child: new Text(
+                  startTime == null ? "Start" : "Finish",
+                  style: new TextStyle(fontSize: 16.0),
+                  textAlign: TextAlign.center,
+                ),
+                onPressed: buttonPressed),
           ],
-        ));
+        )));
   }
 
   void buttonPressed() {
