@@ -13,13 +13,11 @@ class TripContainer {
 
   TripContainer(this.title, [this.id]);
 
-  Duration getAverage()
-  {
-    if(trips.isEmpty)
-      return new Duration();
+  Duration getAverage() {
+    if (trips.isEmpty) return null;
 
-    Duration sum = trips.map((t)=>t.time).reduce((f,s) => f + s);
-    return new Duration(milliseconds: (sum.inMilliseconds/trips.length).round());
+    Duration sum = trips.map((t) => t.time).reduce((f, s) => f + s);
+    return new Duration(milliseconds: (sum.inMilliseconds / trips.length).round());
   }
 
   Trip getBest() {

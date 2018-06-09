@@ -1,6 +1,6 @@
 import '../models/Trip.dart';
 
-class TripFieldNames{
+class TripFieldNames {
   static final String id = "id";
   static final String date = "date";
   static final String time = "time";
@@ -14,21 +14,21 @@ class TripDbModel {
   int tripContainer_id;
 
   TripDbModel();
-  TripDbModel.fromTrip(Trip t)
-  {
+  TripDbModel.fromTrip(Trip t) {
     this.id = t.id;
     this.date = t.date.toString();
     this.time = t.time.inMilliseconds;
   }
 
   static final columns = [
-    TripFieldNames.id, 
-    TripFieldNames.date, 
+    TripFieldNames.id,
+    TripFieldNames.date,
     TripFieldNames.time,
-    TripFieldNames.tripContainer_id];
+    TripFieldNames.tripContainer_id
+  ];
 
-  Map<String,dynamic> toMap() {
-    Map<String,dynamic> map = {
+  Map<String, dynamic> toMap() {
+    Map<String, dynamic> map = {
       TripFieldNames.id: id,
       TripFieldNames.date: date,
       TripFieldNames.time: time,

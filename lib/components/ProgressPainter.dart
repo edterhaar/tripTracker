@@ -20,7 +20,6 @@ class ProgressPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-
     Paint paint = new Paint()
       ..color = backgroundColor
       ..strokeWidth = 20.0
@@ -28,17 +27,16 @@ class ProgressPainter extends CustomPainter {
       ..style = PaintingStyle.stroke;
 
     canvas.drawCircle(size.center(Offset.zero), size.width / 2.0, paint);
+
     paint.color = color;
-    
     double progressRadians = (1.0 - animation.value) * 2 * math.PI;
-    canvas.drawArc(
-      Offset.zero & size, math.PI * 1.5, -progressRadians, false, paint);
+    canvas.drawArc(Offset.zero & size, math.PI * 1.5, -progressRadians, false, paint);
   }
 
   @override
   bool shouldRepaint(ProgressPainter other) {
     return animation.value != other.animation.value ||
-      color != other.color ||
-      backgroundColor != other.backgroundColor;
+        color != other.color ||
+        backgroundColor != other.backgroundColor;
   }
 }

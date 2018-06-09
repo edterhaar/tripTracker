@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import '../models/TripContainer.dart';
 import '../models/Trip.dart';
 import '../components/TripListItem.dart';
+import '../components/SummaryComponent.dart';
 import '../Helpers.dart';
 import 'TimerPage.dart';
-
 
 class TripsPage extends StatefulWidget {
   final TripContainer tripContainer;
@@ -27,25 +27,7 @@ class TripsPageState extends State<TripsPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            new Card(
-                margin: EdgeInsets.all(10.0),
-                child: new Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-                  new ListTile(
-                      title: new Text(
-                    "Average: " + getTimeString(widget.tripContainer.getAverage()),
-                    textAlign: TextAlign.center,
-                  )),
-                  new ListTile(
-                      title: new Text(
-                    "Best: " + getTimeString(widget.tripContainer.getBest()?.time),
-                    textAlign: TextAlign.center,
-                  )),
-                  new ListTile(
-                      title: new Text(
-                    "Worst: " + getTimeString(widget.tripContainer.getWorst()?.time),
-                    textAlign: TextAlign.center,
-                  )),
-                ])),
+            new SummaryComponent(widget.tripContainer),
             new Divider(
               height: 5.0,
             ),
@@ -79,7 +61,7 @@ class TripsPageState extends State<TripsPage> {
   }
 
   String getTripDetails(Trip trip) =>
-      "${getDateString(trip?.date)} \n ${getTimeString(trip?.time)}";
+      "${Formatter.toDateString(trip?.date)} \n ${Formatter.toTimeString(trip?.time)}";
 
   Trip getTrip(int index) => widget.tripContainer.trips[index];
 

@@ -13,14 +13,14 @@ class TripsListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return new Container(
         color: _tripStatus == BestWorst.Worst
-            ? Colors.red[200]
-            : _tripStatus == BestWorst.Best ? Colors.greenAccent[100] : Colors.white,
+            ? worstColour
+            : _tripStatus == BestWorst.Best ? bestColour : Colors.white,
         child: new ListTile(
             title: new Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            new Text("Date: " + getDateString(_trip.date)),
-            new Text("Time: " + getTimeString(_trip.time))
+            new Text("Date: " + Formatter.toDateString(_trip.date)),
+            new Text("Time: " + Formatter.toTimeString(_trip.time))
           ],
         )));
   }

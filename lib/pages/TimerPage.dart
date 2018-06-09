@@ -3,6 +3,7 @@ import 'dart:async';
 import '../models/Trip.dart';
 import '../models/TripContainer.dart';
 import '../components/TimerComponent.dart';
+import '../components/SummaryComponent.dart';
 
 class TimerPage extends StatefulWidget {
   final TripContainer tripContainer;
@@ -37,6 +38,7 @@ class TimerPageState extends State<TimerPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            new SummaryComponent(widget.tripContainer),
             new TimerComponent(
                 time: new Text(TimerTextFormatter.format(differenceInTime().inMilliseconds),
                     style: new TextStyle(fontSize: 60.0), textAlign: TextAlign.center),

@@ -1,5 +1,6 @@
 import '../models/TripContainer.dart';
-class TripContainerFieldNames{
+
+class TripContainerFieldNames {
   static final String id = "id";
   static final String name = "name";
 }
@@ -8,19 +9,16 @@ class TripContainerDbModel {
   int id;
   String name;
 
-    TripContainerDbModel();
-    TripContainerDbModel.fromTrip(TripContainer t)
-  {
+  TripContainerDbModel();
+  TripContainerDbModel.fromTrip(TripContainer t) {
     this.id = t.id;
     this.name = t.title;
   }
 
-  static final columns = [
-    TripContainerFieldNames.id, 
-    TripContainerFieldNames.name];
+  static final columns = [TripContainerFieldNames.id, TripContainerFieldNames.name];
 
-  Map<String,dynamic> toMap() {
-    Map<String,dynamic> map = {
+  Map<String, dynamic> toMap() {
+    Map<String, dynamic> map = {
       TripContainerFieldNames.id: id,
       TripContainerFieldNames.name: name,
     };

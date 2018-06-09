@@ -19,9 +19,9 @@ class TripsContainerListItem extends StatelessWidget {
         subtitle: new Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            new Text("Best: " + getTimeString(_tripContainer.getBest()?.time)),
+            new Text("Best: " + Formatter.toTimeString(_tripContainer.getBest()?.time)),
             new Padding(padding: EdgeInsets.symmetric(horizontal: 5.0)),
-            new Text("Worst: " + getTimeString(_tripContainer.getWorst()?.time))
+            new Text("Worst: " + Formatter.toTimeString(_tripContainer.getWorst()?.time))
           ],
         ),
         trailing: new Icon(

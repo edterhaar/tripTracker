@@ -8,9 +8,7 @@ class TimerComponent extends StatefulWidget {
 
   TimerComponent(
       {Key key, @required this.time, @required this.started, @required Duration expectedTime})
-      : expectedTimeInternal = expectedTime == new Duration(milliseconds: 0)
-            ? new Duration(minutes: 30)
-            : expectedTime,
+      : expectedTimeInternal = expectedTime ?? new Duration(minutes: 15),
         super(key: key);
 
   TimerComponentState createState() => new TimerComponentState();
