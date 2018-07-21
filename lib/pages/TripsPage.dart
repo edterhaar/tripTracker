@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../database/DatabaseClient.dart';
 import '../models/TripContainer.dart';
 import '../models/Trip.dart';
 import '../components/TripListItem.dart';
@@ -35,13 +36,20 @@ class TripsPageState extends State<TripsPage> {
                 flex: 3,
                 child: new ListView.builder(
                   itemCount: widget.tripContainer.trips.length,
-                  itemBuilder: (context, index) {
-                    return new Column(children: <Widget>[
-                      new TripsListItem(getTrip(index), getStatus(getTrip(index))),
-                      new Divider(
-                        height: 5.0,
-                      )
-                    ]);
+                  itemBuilder: (context,int index) {
+                    return new Dismissible(
+                      key: new Key(getTrip(index).id.toString()),
+                      onDismissed: (direction) async {
+                        Trip trip = getTrip(index);
+                        await DatabaseClient.get().deleteTrip(trip, widget.tripContainer);
+                        widget.tripContainer.trips.remove(trip);
+                        setState(() { });
+                      },
+                      child: new Column(children: <Widget>[
+                        new TripsListItem(getTrip(index), getStatus(getTrip(index))),
+                        new Divider(height: 5.0)
+                      ]),
+                    );
                   },
                 ))
           ]),
@@ -52,6 +60,7 @@ class TripsPageState extends State<TripsPage> {
               new MaterialPageRoute(builder: (context) => new TimerPage(widget.tripContainer)));
           if (trip != null) {
             widget.tripContainer.trips.add(trip);
+            await DatabaseClient.get().saveTrip(trip, widget.tripContainer);
           }
         },
         tooltip: 'New trip',

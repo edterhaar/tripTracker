@@ -12,37 +12,25 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => new _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
+class _MyHomePageState extends State<MyHomePage>  {
   List<TripContainer> _tripContainers = new List();
-  DatabaseClient db;
 
-  _MyHomePageState() {
-    db = new DatabaseClient();
-  }
+  _MyHomePageState() {}
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
-
-    db.create().then((dynamic) => db.getGetAllTripContainers().then((t) {
-          _tripContainers = t;
-          setState(() {});
-        }));
+    DatabaseClient.get().getGetAllTripContainers().then((t) {
+      _tripContainers = t;
+      setState(() {});
+    });
   }
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
     print("Dipsoing");
+    DatabaseClient.get().close();
     super.dispose();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.suspending || state == AppLifecycleState.inactive) {
-      db.save(_tripContainers);
-    }
   }
 
   @override
@@ -54,12 +42,17 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
       body: new ListView.builder(
         itemCount: _tripContainers.length,
         itemBuilder: (context, index) {
-          return new Column(children: <Widget>[
-            new TripsContainerListItem(_tripContainers[index]),
-            new Divider(
-              height: 5.0,
-            )
-          ]);
+          return new Dismissible(
+              key: new Key(_tripContainers[index].title),
+              onDismissed: (direction) async {
+                TripContainer tripContainer = _tripContainers[index];
+                _tripContainers.remove(tripContainer);
+                await DatabaseClient.get().deleteTripContainer(tripContainer);
+              },
+              child: new Column(children: <Widget>[
+                new TripsContainerListItem(_tripContainers[index]),
+                new Divider(height: 5.0)
+              ]));
         },
       ),
       floatingActionButton: new FloatingActionButton(
@@ -68,6 +61,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
               context, new MaterialPageRoute(builder: (context) => new NewTripContainerPage()));
           if (tripContainer != null) {
             _tripContainers.add(tripContainer);
+            await DatabaseClient.get().saveTripContainer(tripContainer);
           }
         },
         tooltip: 'New trip',

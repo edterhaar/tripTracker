@@ -1,5 +1,7 @@
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'ProgressPainter.dart';
+
 
 class TimerComponent extends StatefulWidget {
   final Text time;

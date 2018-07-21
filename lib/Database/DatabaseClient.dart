@@ -14,37 +14,79 @@ class TableNames {
 }
 
 class DatabaseClient {
-  Database _db;
+  static final DatabaseClient _repo = new DatabaseClient._internal();
 
-  Future create() async {
-    if (_db != null) return;
+  static DatabaseClient get() {
+    return _repo;
+  }
+
+  DatabaseClient._internal() ;
+
+  Database _db;
+  bool _didInit = false;
+
+  Future _init() async {
+    if (_didInit) {
+      return;
+    }
 
     Directory path = await getApplicationDocumentsDirectory();
     String dbPath = join(path.path, "trips.db");
 
     _db = await openDatabase(dbPath, version: 1, onCreate: this._create);
+    _didInit = true;
   }
 
-  Future save(List<TripContainer> tripContainers) async {
-    for (var tripContainer in tripContainers) {
-      var tripContainerModel = new TripContainerDbModel.fromTrip(tripContainer);
+  Future<Database> _getDb() async {
+    if (!_didInit) await _init();
+    return _db;
+  }
 
-      if (tripContainerModel.id == null) {
-        tripContainer.id = await _insertTripContainer(tripContainerModel);
-      } else {
-        await _updateTripContainer(tripContainerModel);
-      }
+  Future close() async {
+    var db = await _getDb();
+    await db.close();
+    _didInit = false;
+  }
 
-      for (var trip in tripContainer.trips) {
-        TripDbModel tripModel = new TripDbModel.fromTrip(trip);
-        tripModel.tripContainer_id = tripContainerModel.id;
+  Future saveTripContainer(TripContainer tripContainer) async {
+    var tripContainerModel = new TripContainerDbModel.fromTrip(tripContainer);
 
-        if (tripModel.id == null) {
-          trip.id = await _insertTrip(tripModel);
-        } else {
-          await _updateTrip(tripModel);
-        }
-      }
+    if (tripContainerModel.id == null) {
+      tripContainer.id = await _insertTripContainer(tripContainerModel);
+    } else {
+      await _updateTripContainer(tripContainerModel);
+    }
+  }
+
+  Future deleteTripContainer(TripContainer tripContainer) async {
+    var tripContainerModel = new TripContainerDbModel.fromTrip(tripContainer);
+
+    if (tripContainerModel.id == null) {
+      // tripContainer.id = await _insertTripContainer(tripContainerModel);
+    } else {
+      await _deleteTripContainer(tripContainerModel);
+    }
+  }
+
+  Future saveTrip(Trip trip, TripContainer tripContainer) async {
+    TripDbModel tripModel = new TripDbModel.fromTrip(trip);
+    tripModel.tripContainer_id = tripContainer.id;
+
+    if (tripModel.id == null) {
+      trip.id = await _insertTrip(tripModel);
+    } else {
+      await _updateTrip(tripModel);
+    }
+  }
+
+  Future deleteTrip(Trip trip, TripContainer tripContainer) async {
+    TripDbModel tripModel = new TripDbModel.fromTrip(trip);
+    tripModel.tripContainer_id = tripContainer.id;
+
+    if (tripModel.id == null) {
+      //trip.id = await _insertTrip(tripModel);
+    } else {
+      await _deleteTrip(tripModel);
     }
   }
 
@@ -89,30 +131,49 @@ class DatabaseClient {
 
 //todo refactor out to one function
   Future<int> _insertTrip(TripDbModel trip) async {
-    trip.id = await _db.insert(TableNames.trip, trip.toMap());
+    Database db = await _getDb();
+    trip.id = await db.insert(TableNames.trip, trip.toMap());
+    return trip.id;
+  }
+
+  Future<int> _deleteTrip(TripDbModel trip) async {
+    Database db = await _getDb();
+    trip.id =
+        await db.delete(TableNames.trip, where: "${TripFieldNames.id} = ?", whereArgs: [trip.id]);
     return trip.id;
   }
 
   Future<TripDbModel> _updateTrip(TripDbModel trip) async {
-    await _db.update(TableNames.trip, trip.toMap(),
+    Database db = await _getDb();
+    await db.update(TableNames.trip, trip.toMap(),
         where: "${TripFieldNames.id} = ?", whereArgs: [trip.id]);
     return trip;
   }
 
   Future<int> _insertTripContainer(TripContainerDbModel tripContainer) async {
-    tripContainer.id = await _db.insert(TableNames.tripContainer, tripContainer.toMap());
+    Database db = await _getDb();
+    tripContainer.id = await db.insert(TableNames.tripContainer, tripContainer.toMap());
 
     return tripContainer.id;
   }
 
+  Future<int> _deleteTripContainer(TripContainerDbModel tripContainer) async {
+    Database db = await _getDb();
+    tripContainer.id = await db.delete(TableNames.tripContainer,
+        where: "${TripContainerFieldNames.id} = ?", whereArgs: [tripContainer.id]);
+    return tripContainer.id;
+  }
+
   Future<TripContainerDbModel> _updateTripContainer(TripContainerDbModel tripContainer) async {
-    await _db.update(TableNames.tripContainer, tripContainer.toMap(),
+    Database db = await _getDb();
+    await db.update(TableNames.tripContainer, tripContainer.toMap(),
         where: "${TripContainerFieldNames.id} = ?", whereArgs: [tripContainer.id]);
     return tripContainer;
   }
 
   Future<List<TripDbModel>> _fetchTripWithContinerId(int id) async {
-    List<Map> results = await _db.query(TableNames.trip,
+    Database db = await _getDb();
+    List<Map> results = await db.query(TableNames.trip,
         columns: TripDbModel.columns,
         where: "${TripFieldNames.tripContainer_id} = ?",
         whereArgs: [id]);
@@ -127,8 +188,9 @@ class DatabaseClient {
   }
 
   Future<List<TripContainerDbModel>> _fetchAllTripContainer() async {
+    Database db = await _getDb();
     List<Map> results =
-        await _db.query(TableNames.tripContainer, columns: TripContainerDbModel.columns);
+        await db.query(TableNames.tripContainer, columns: TripContainerDbModel.columns);
 
     List<TripContainerDbModel> tripContainerDbModels = new List();
     results.forEach((result) {

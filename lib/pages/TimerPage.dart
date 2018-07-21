@@ -17,7 +17,7 @@ class TimerPageState extends State<TimerPage> {
   final String _title = "New trip";
 
   TimerPageState() {
-    _timer = new Timer.periodic(new Duration(microseconds: 250), onTick);
+    _timer = new Timer.periodic(new Duration(microseconds: 1000), onTick);
   }
 
   @override
