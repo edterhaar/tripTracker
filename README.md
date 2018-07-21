@@ -1,4 +1,4 @@
-# test_proj
+# Trip Tacker
 
 A new Flutter project.
 

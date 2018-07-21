@@ -1,5 +1,5 @@
-name: test_proj
-description: A new Flutter project.
+name: tripTracker
+description: App to record your trips
 
 dependencies:
   flutter:
