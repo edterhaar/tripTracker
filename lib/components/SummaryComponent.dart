@@ -23,7 +23,7 @@ class SummaryComponent extends StatelessWidget {
                     "Average: " + Formatter.toTimeString(_tripContainer.getAverage()),
                     textAlign: TextAlign.center,
                   ),
-                  backgroundColor: Colors.blue[100],
+                  backgroundColor: averageColour,
                 ),
                 new Chip(
                     label: new Text(

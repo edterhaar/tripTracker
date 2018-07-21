@@ -15,7 +15,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage>  {
   List<TripContainer> _tripContainers = new List();
 
-  _MyHomePageState() {}
+  _MyHomePageState();
 
   @override
   void initState() {
@@ -28,7 +28,7 @@ class _MyHomePageState extends State<MyHomePage>  {
 
   @override
   void dispose() {
-    print("Dipsoing");
+    print("Disposing");
     DatabaseClient.get().close();
     super.dispose();
   }

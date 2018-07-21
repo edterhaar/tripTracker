@@ -1,8 +1,9 @@
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 
-Color worstColour = Colors.red[200];
-Color bestColour = Colors.greenAccent[100];
+Color worstColour = Colors.red[900];
+Color bestColour = Color.fromARGB(255, 26, 214, 101);
+Color averageColour = Colors.indigo[800];
 
 class Formatter {
   static String toTimeString(Duration duration) {

@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'ProgressPainter.dart';
+import '../Helpers.dart';
 
 
 class TimerComponent extends StatefulWidget {
@@ -21,8 +22,8 @@ class TimerComponentState extends State<TimerComponent> with TickerProviderState
   TimerComponentState();
   DateTime timeStarted;
 
-  Color _foreColour = Colors.blue;
-  Color _backColour = Colors.greenAccent;
+  Color _foreColour = averageColour;
+  Color _backColour = bestColour;
 
   @override
   void initState() {
@@ -36,16 +37,16 @@ class TimerComponentState extends State<TimerComponent> with TickerProviderState
       if (status == AnimationStatus.completed) {
         if (timeStarted != null &&
             new DateTime.now().difference(timeStarted) < widget.expectedTimeInternal) {
-          _foreColour = Colors.greenAccent;
-          _backColour = Colors.blue;
+          _foreColour = bestColour;
+          _backColour = averageColour;
         }
         if (timeStarted != null &&
             new DateTime.now().difference(timeStarted) > widget.expectedTimeInternal) {
-          if (_foreColour == Colors.red) {
-            _backColour = Colors.red;
+          if (_foreColour == worstColour) {
+            _backColour = worstColour;
           } else {
-            _foreColour = Colors.red;
-            _backColour = Colors.greenAccent;
+            _foreColour = worstColour;
+            _backColour = bestColour;
           }
         }
       }

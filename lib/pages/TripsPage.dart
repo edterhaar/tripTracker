@@ -19,10 +19,7 @@ class TripsPageState extends State<TripsPage> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: new AppBar(
-        title: new Text(widget.tripContainer.title),
-        backgroundColor: Colors.greenAccent,
-      ),
+      appBar: new AppBar(title: new Text(widget.tripContainer.title)),
       body: new Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -36,17 +33,18 @@ class TripsPageState extends State<TripsPage> {
                 flex: 3,
                 child: new ListView.builder(
                   itemCount: widget.tripContainer.trips.length,
-                  itemBuilder: (context,int index) {
+                  itemBuilder: (context, int index) {
                     return new Dismissible(
                       key: new Key(getTrip(index).id.toString()),
                       onDismissed: (direction) async {
                         Trip trip = getTrip(index);
                         await DatabaseClient.get().deleteTrip(trip, widget.tripContainer);
                         widget.tripContainer.trips.remove(trip);
-                        setState(() { });
+                        setState(() {});
                       },
                       child: new Column(children: <Widget>[
-                        new TripsListItem(getTrip(index), getStatus(getTrip(index))),
+                        new TripsListItem(getTrip(index),
+                            widget.tripContainer),
                         new Divider(height: 5.0)
                       ]),
                     );
@@ -54,7 +52,6 @@ class TripsPageState extends State<TripsPage> {
                 ))
           ]),
       floatingActionButton: new FloatingActionButton(
-        backgroundColor: Colors.greenAccent,
         onPressed: () async {
           Trip trip = await Navigator.push(context,
               new MaterialPageRoute(builder: (context) => new TimerPage(widget.tripContainer)));
@@ -74,12 +71,5 @@ class TripsPageState extends State<TripsPage> {
 
   Trip getTrip(int index) => widget.tripContainer.trips[index];
 
-  BestWorst getStatus(Trip trip) {
-    if (widget.tripContainer.getWorst() == trip)
-      return BestWorst.Worst;
-    else if (widget.tripContainer.getBest() == trip)
-      return BestWorst.Best;
-    else
-      return BestWorst.Neither;
-  }
+  
 }

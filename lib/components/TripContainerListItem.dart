@@ -13,7 +13,7 @@ class TripsContainerListItem extends StatelessWidget {
     return new ListTile(
         leading: new CircleAvatar(
             backgroundColor: Colors.greenAccent,
-            foregroundColor: Colors.white,
+            foregroundColor: Theme.of(context).primaryTextTheme.body1.color,
             child: new Text(_tripContainer.title[0])),
         title: new Text(_tripContainer.title),
         subtitle: new Row(
